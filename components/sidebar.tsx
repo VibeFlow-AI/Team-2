@@ -1,17 +1,18 @@
 import { Search, Calendar } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 
 export default function Sidebar() {
   return (
     <div className="fixed left-0 top-16 h-[calc(100vh-4rem)] w-16 lg:w-20 bg-white border-r border-gray-200 flex flex-col items-center py-6">
       {/* Navigation Icons */}
       <div className="flex flex-col space-y-6">
-        <button className="p-3 rounded-lg hover:bg-gray-100 transition-colors">
+        <Link href="/dashboard" className="p-3 rounded-lg hover:bg-gray-100 transition-colors">
           <Search className="w-6 h-6 text-gray-600" />
-        </button>
-        <button className="p-3 rounded-lg hover:bg-gray-100 transition-colors">
+        </Link>
+        <Link href="/student-dashboard" className="p-3 rounded-lg hover:bg-gray-100 transition-colors">
           <Calendar className="w-6 h-6 text-gray-600" />
-        </button>
+        </Link>
       </div>
 
       {/* User Profile - Bottom */}

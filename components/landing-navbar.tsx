@@ -1,9 +1,9 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
-export default function Navbar() {
+export default function LandingNavbar() {
   return (
-    <nav className="bg-white border-b border-gray-200 px-4 lg:px-6 py-4">
+    <nav className="bg-white/80 backdrop-blur-md border-b border-gray-200 px-4 lg:px-6 py-4 fixed top-0 left-0 right-0 z-50">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center">
@@ -15,24 +15,21 @@ export default function Navbar() {
 
         {/* Navigation Links */}
         <div className="hidden md:flex items-center space-x-8">
-          <Link href="/dashboard" className="text-gray-700 hover:text-gray-900 font-medium transition-colors">
-            Discover
+          <Link href="/" className="text-gray-700 hover:text-gray-900 font-medium transition-colors">
+            Home
           </Link>
-          <Link href="/student-dashboard" className="text-gray-700 hover:text-gray-900 font-medium transition-colors">
-            My Dashboard
+          <Link href="/about" className="text-gray-700 hover:text-gray-900 font-medium transition-colors">
+            About
           </Link>
-          <Link href="/sessions" className="text-gray-700 hover:text-gray-900 font-medium transition-colors">
-            Sessions
+          <Link href="/how-it-works" className="text-gray-700 hover:text-gray-900 font-medium transition-colors">
+            How it Works
           </Link>
         </div>
 
-        {/* User Menu */}
+        {/* Sign In Button */}
         <div className="flex items-center space-x-4">
           <Button variant="ghost" className="text-gray-700 hover:text-gray-900">
-            Profile
-          </Button>
-          <Button variant="outline" className="text-gray-700 hover:text-gray-900 bg-transparent">
-            Sign Out
+            Sign In
           </Button>
         </div>
       </div>
