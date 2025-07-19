@@ -191,7 +191,11 @@ export default function MentorOnboarding({
         newErrors.fullName = "Full name is required";
       if (!formData.age) newErrors.age = "Age is required";
       if (!formData.email.trim()) newErrors.email = "Email is required";
-      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(formData.email))
+      else if (
+        !/^[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/.test(
+          formData.email
+        )
+      )
         newErrors.email = "Invalid email format";
       if (!formData.contactNumber.trim())
         newErrors.contactNumber = "Contact number is required";
