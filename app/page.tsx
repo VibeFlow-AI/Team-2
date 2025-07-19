@@ -68,27 +68,32 @@ const EduVibePage: React.FC = () => {
 
   // Auto-scroll effect for carousel
   useEffect(() => {
-    // Function to handle the continuous slide
     const advanceCarousel = () => {
-      // If we've reached the end, prepare to loop
+      const cardWidthWithGap = 280 + 16; // card width + gap
+
+      // Calculate the next index. If it goes past the original set,
+      // reset to the corresponding position in the duplicated set.
+      let nextIndex = activeCardIndex + 1;
+
       if (activeCardIndex >= featureCards.length - 1) {
-        // First quickly reset to beginning without animation
+        // If we've reached the last card of the original set,
+        // we prepare to snap back to the start of the duplicated set (which looks like the original start).
         controls
           .start({
-            x: 0,
-            transition: { duration: 0 },
+            x: 0, // Visually snap back to the beginning
+            transition: { duration: 0 }, // Make the snap immediate
           })
           .then(() => {
-            // Then set state to beginning
-            setActiveCardIndex(0);
+            setActiveCardIndex(0); // Reset active index to the start of the original set
+            controls.start({
+              x: 0, // Ensure it's at the start for the next animation cycle
+              transition: { duration: 0 }, // No animation for the snap
+            });
           });
       } else {
         // Normal advance to next slide
-        const nextIndex = activeCardIndex + 1;
         setActiveCardIndex(nextIndex);
-
-        // Calculate scroll amount for the next card
-        const scrollAmount = nextIndex * (280 + 16); // card width + gap
+        const scrollAmount = nextIndex * cardWidthWithGap;
         controls.start({
           x: -scrollAmount,
           transition: { type: "tween", ease: "easeInOut", duration: 0.8 },
@@ -96,10 +101,8 @@ const EduVibePage: React.FC = () => {
       }
     };
 
-    // Set up the interval for auto-scrolling
     const interval = setInterval(advanceCarousel, 3000);
 
-    // Clear the interval on component unmount
     return () => clearInterval(interval);
   }, [activeCardIndex, controls, featureCards.length]);
 
@@ -296,7 +299,7 @@ const EduVibePage: React.FC = () => {
             </div>
           </div>
 
-          {/* What's in it for Students Section - CONTINUOUS CAROUSEL */}
+          {/* What's in it for Students Section - ENHANCED CAROUSEL */}
           <div className="mt-16 lg:mt-24 mb-16 lg:mb-24">
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium leading-tight text-global-1 text-center mb-8 lg:mb-12">
               What's in it for Students?
@@ -309,13 +312,13 @@ const EduVibePage: React.FC = () => {
                 guidance, support, and practical industry insights.
               </p>
 
-              {/* Carousel Container - Removed navigation buttons */}
+              {/* Enhanced Carousel Container */}
               <div className="w-full max-w-7xl mx-auto relative">
                 {/* Carousel Content */}
-                <div className="overflow-hidden px-8">
+                <div className="overflow-hidden px-12">
                   <motion.div
                     ref={carouselRef}
-                    className="flex gap-4"
+                    className="flex gap-6"
                     animate={controls}
                     transition={{
                       type: "tween",
@@ -326,7 +329,7 @@ const EduVibePage: React.FC = () => {
                     {[...featureCards, ...featureCards].map((card, index) => (
                       <motion.div
                         key={`${card.id}-${index}`}
-                        className="relative w-[280px] h-80 lg:h-96 rounded-3xl overflow-hidden flex-shrink-0"
+                        className="relative w-[280px] h-96 rounded-3xl overflow-hidden flex-shrink-0 shadow-xl"
                         initial={{ opacity: 0.8 }}
                         animate={{
                           opacity: 1,
@@ -338,10 +341,15 @@ const EduVibePage: React.FC = () => {
                             activeCardIndex === index % featureCards.length
                               ? "brightness(1.05)"
                               : "brightness(0.95)",
+                          y:
+                            activeCardIndex === index % featureCards.length
+                              ? -10
+                              : 0,
                         }}
                         transition={{
                           duration: 0.5,
-                        }}>
+                        }}
+                        whileHover={{ scale: 1.05, y: -10 }}>
                         <Image
                           src={card.image}
                           alt={card.title}
@@ -355,23 +363,23 @@ const EduVibePage: React.FC = () => {
                         />
                         <div
                           className={`absolute bottom-0 left-0 right-0 h-2/3 ${card.gradient} rounded-b-3xl flex items-end p-6 
-                          transition-all duration-300 ease-in-out ${
-                            activeCardIndex === index % featureCards.length
-                              ? "backdrop-blur-sm"
-                              : ""
-                          }`}>
-                          <div>
-                            <h3 className="text-xl lg:text-2xl font-medium leading-tight text-global-1 mb-2">
+                  transition-all duration-300 ease-in-out ${
+                    activeCardIndex === index % featureCards.length
+                      ? "backdrop-blur-sm bg-gradient-to-t from-black/70 via-black/30 to-transparent"
+                      : ""
+                  }`}>
+                          <div className="w-full">
+                            <h3 className="text-xl lg:text-2xl font-medium leading-tight text-white mb-3">
                               {card.title}
                             </h3>
                             <p
-                              className={`text-base lg:text-lg font-light leading-relaxed text-global-1 
-                              transition-opacity duration-300 ease-in-out 
-                              ${
-                                activeCardIndex === index % featureCards.length
-                                  ? "opacity-90"
-                                  : "opacity-0 h-0"
-                              }`}>
+                              className={`text-base lg:text-lg font-light leading-relaxed text-white/90
+                      transition-all duration-500 ease-in-out
+                      ${
+                        activeCardIndex === index % featureCards.length
+                          ? "opacity-100 max-h-40"
+                          : "opacity-0 max-h-0 overflow-hidden"
+                      }`}>
                               {card.description}
                             </p>
                           </div>
@@ -381,18 +389,22 @@ const EduVibePage: React.FC = () => {
                   </motion.div>
                 </div>
 
-                {/* Dots Indicator (kept for reference but can be hidden) */}
-                <div className="flex justify-center gap-2 mt-6">
+                {/* Enhanced Dots Indicator */}
+                <div className="flex justify-center gap-3 mt-8">
                   {featureCards.map((_, index) => (
-                    <div
+                    <button
                       key={index}
-                      className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                        activeCardIndex === index
-                          ? "bg-button-2 w-6"
-                          : "bg-gray-300"
-                      }`}
-                      aria-label={`Slide ${index + 1}`}
-                    />
+                      onClick={() => handleDotClick(index)}
+                      className={`transition-all duration-300 focus:outline-none`}
+                      aria-label={`Go to slide ${index + 1}`}>
+                      <div
+                        className={`h-3 rounded-full transition-all duration-300 ${
+                          activeCardIndex === index
+                            ? "bg-button-1 w-10"
+                            : "bg-gray-300 w-3"
+                        }`}
+                      />
+                    </button>
                   ))}
                 </div>
               </div>
