@@ -112,7 +112,6 @@ model Session {
   studentId   String
   mentorId    String
   date        DateTime
-  time        DateTime
   duration    Int      @default(120) // Fixed duration in minutes
   bankSlipUrl String
   fileType    String
