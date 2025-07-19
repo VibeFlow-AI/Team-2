@@ -87,8 +87,7 @@ export default function SampleView({
               {!showAddForm ? (
                 <Button
                   onClick={() => setShowAddForm(true)}
-                  className="w-full bg-indigo-600 hover:bg-indigo-700"
-                >
+                  className="w-full bg-indigo-600 hover:bg-indigo-700">
                   <Plus className="mr-2 h-4 w-4" />
                   Add Sample
                 </Button>
@@ -113,8 +112,7 @@ export default function SampleView({
                     <Button
                       type="submit"
                       className="flex-1"
-                      disabled={isPending}
-                    >
+                      disabled={isPending}>
                       {isPending ? "Creating..." : "Create"}
                     </Button>
                     <Button
@@ -124,8 +122,7 @@ export default function SampleView({
                         setShowAddForm(false);
                         setError(null);
                       }}
-                      className="flex-1"
-                    >
+                      className="flex-1">
                       Cancel
                     </Button>
                   </div>
@@ -153,8 +150,7 @@ export default function SampleView({
                       size="sm"
                       onClick={() => handleDeleteSample(sample.id)}
                       className="h-8 w-8 p-0 text-gray-500 hover:text-red-600"
-                      disabled={isPending}
-                    >
+                      disabled={isPending}>
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   </div>
