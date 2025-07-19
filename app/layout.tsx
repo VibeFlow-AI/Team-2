@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,9 +26,85 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <div className="flex flex-col h-screen">
+          <header className="bg-black text-white p-4 flex justify-between items-center">
+            <div className="text-2xl font-bold">
+              <span className="inline-block bg-white text-black p-1 rounded">
+                B
+              </span>
+            </div>
+            <nav className="flex-1 flex justify-center space-x-8">
+              <Link href="/dashboard" className="hover:text-gray-300">
+                Home
+              </Link>
+              <Link href="/about" className="hover:text-gray-300">
+                About
+              </Link>
+            </nav>
+            <Link
+              href="/dashboard"
+              className="bg-white text-black px-4 py-2 rounded-md hover:bg-gray-200">
+              Dashboard
+            </Link>
+          </header>
+          <div className="flex flex-1">
+            <aside className="w-16 bg-white border-r flex flex-col items-center py-4 space-y-8">
+              <div>
+                <Link
+                  href="/dashboard"
+                  className="text-gray-600 hover:text-black">
+                  <div className="p-2 hover:bg-gray-100 rounded cursor-pointer">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                      />
+                    </svg>
+                  </div>
+                </Link>
+                <Link
+                  href="/booked-sessions"
+                  className="text-gray-600 hover:text-black">
+                  <div className="p-2 hover:bg-gray-100 rounded cursor-pointer">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+                      />
+                    </svg>
+                  </div>
+                </Link>
+              </div>
+              <div className="mt-auto">
+                <div className="w-10 h-10 rounded-full bg-gray-300 overflow-hidden flex items-center justify-center">
+                  <img
+                    src="https://via.placeholder.com/40"
+                    alt="Profile"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+            </aside>
+            <main className="flex-1 bg-gray-50 p-6 overflow-auto">
+              {children}
+            </main>
+          </div>
+        </div>
       </body>
     </html>
   );
