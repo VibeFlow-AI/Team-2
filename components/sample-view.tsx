@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Sample } from "@/lib/generated/prisma";
 import { addSample, deleteSample } from "@/server/actions/sample";
 import { BookOpen, Plus, Trash2 } from "lucide-react";
 import { useState, useTransition } from "react";
