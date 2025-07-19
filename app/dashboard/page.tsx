@@ -1,38 +1,38 @@
-"use client"
+"use client";
 
-import { useState, useMemo } from "react"
-import { useRouter } from "next/navigation"
-import Navbar from "@/components/navbar"
-import Sidebar from "@/components/sidebar"
-import EnhancedFilterBar from "@/components/enhanced-filter-bar"
-import EnhancedMentorCard from "@/components/enhanced-mentor-card"
-import MentorBookingModal from "@/components/mentor-booking-modal"
-import BankSlipUploadModal from "@/components/bank-slip-upload-modal"
-import EmptyState from "@/components/empty-state"
-import { toast } from "@/hooks/use-toast"
+import { useState, useMemo } from "react";
+import { useRouter } from "next/navigation";
+import Navbar from "@/components/navbar";
+import Sidebar from "@/components/sidebar";
+import EnhancedFilterBar from "@/components/enhanced-filter-bar";
+import EnhancedMentorCard from "@/components/enhanced-mentor-card";
+import MentorBookingModal from "@/components/mentor-booking-modal";
+import BankSlipUploadModal from "@/components/bank-slip-upload-modal";
+import EmptyState from "@/components/empty-state";
+import { toast } from "react-hot-toast";
 
 interface Mentor {
-  id: number
-  name: string
-  city: string
-  country: string
-  initials: string
-  avatarColor: string
-  subjects: string[]
-  bio: string
-  languages: string[]
-  experience: string
-  gradeLevels: string[]
-  rating: number
-  totalSessions: number
-  isBookmarked?: boolean
+  id: number;
+  name: string;
+  city: string;
+  country: string;
+  initials: string;
+  avatarColor: string;
+  subjects: string[];
+  bio: string;
+  languages: string[];
+  experience: string;
+  gradeLevels: string[];
+  rating: number;
+  totalSessions: number;
+  isBookmarked?: boolean;
 }
 
 interface FilterState {
-  duration: string
-  subjects: string[]
-  languages: string[]
-  educationLevels: string[]
+  duration: string;
+  subjects: string[];
+  languages: string[];
+  educationLevels: string[];
 }
 
 // Mock mentor data with enhanced details
@@ -127,82 +127,92 @@ const mentors: Mentor[] = [
     rating: 4.6,
     totalSessions: 112,
   },
-]
+];
 
 export default function Dashboard() {
-  const router = useRouter()
+  const router = useRouter();
   const [filters, setFilters] = useState<FilterState>({
     duration: "",
     subjects: [],
     languages: [],
     educationLevels: [],
-  })
+  });
 
-  const [selectedMentor, setSelectedMentor] = useState<Mentor | null>(null)
-  const [showBookingModal, setShowBookingModal] = useState(false)
-  const [showPaymentModal, setShowPaymentModal] = useState(false)
+  const [selectedMentor, setSelectedMentor] = useState<Mentor | null>(null);
+  const [showBookingModal, setShowBookingModal] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [sessionDetails, setSessionDetails] = useState<{
-    mentorName: string
-    date: Date
-    time: string
-  } | null>(null)
+    mentorName: string;
+    date: Date;
+    time: string;
+  } | null>(null);
 
   // Matching algorithm
   const filteredAndSortedMentors = useMemo(() => {
     const filtered = mentors.filter((mentor) => {
       // Duration filter (assuming all mentors offer 2-hour sessions)
       if (filters.duration && filters.duration !== "2hours") {
-        return false
+        return false;
       }
 
       // Subjects filter
       if (filters.subjects.length > 0) {
-        const hasMatchingSubject = filters.subjects.some((subject) => mentor.subjects.includes(subject))
-        if (!hasMatchingSubject) return false
+        const hasMatchingSubject = filters.subjects.some((subject) =>
+          mentor.subjects.includes(subject)
+        );
+        if (!hasMatchingSubject) return false;
       }
 
       // Languages filter
       if (filters.languages.length > 0) {
-        const hasMatchingLanguage = filters.languages.some((language) => mentor.languages.includes(language))
-        if (!hasMatchingLanguage) return false
+        const hasMatchingLanguage = filters.languages.some((language) =>
+          mentor.languages.includes(language)
+        );
+        if (!hasMatchingLanguage) return false;
       }
 
       // Education levels filter
       if (filters.educationLevels.length > 0) {
-        const hasMatchingLevel = filters.educationLevels.some((level) => mentor.gradeLevels.includes(level))
-        if (!hasMatchingLevel) return false
+        const hasMatchingLevel = filters.educationLevels.some((level) =>
+          mentor.gradeLevels.includes(level)
+        );
+        if (!hasMatchingLevel) return false;
       }
 
-      return true
-    })
+      return true;
+    });
 
     // Sort by relevance score
     return filtered.sort((a, b) => {
-      let scoreA = 0
-      let scoreB = 0
+      let scoreA = 0;
+      let scoreB = 0;
 
       // Subject overlap score
-      const subjectOverlapA = filters.subjects.filter((s) => a.subjects.includes(s)).length
-      const subjectOverlapB = filters.subjects.filter((s) => b.subjects.includes(s)).length
-      scoreA += subjectOverlapA * 10
-      scoreB += subjectOverlapB * 10
+      const subjectOverlapA = filters.subjects.filter((s) =>
+        a.subjects.includes(s)
+      ).length;
+      const subjectOverlapB = filters.subjects.filter((s) =>
+        b.subjects.includes(s)
+      ).length;
+      scoreA += subjectOverlapA * 10;
+      scoreB += subjectOverlapB * 10;
 
       // Rating score
-      scoreA += a.rating * 2
-      scoreB += b.rating * 2
+      scoreA += a.rating * 2;
+      scoreB += b.rating * 2;
 
       // Experience bonus
-      scoreA += a.totalSessions * 0.01
-      scoreB += b.totalSessions * 0.01
+      scoreA += a.totalSessions * 0.01;
+      scoreB += b.totalSessions * 0.01;
 
-      return scoreB - scoreA
-    })
-  }, [filters])
+      return scoreB - scoreA;
+    });
+  }, [filters]);
 
   const handleBookSession = (mentor: Mentor) => {
-    setSelectedMentor(mentor)
-    setShowBookingModal(true)
-  }
+    setSelectedMentor(mentor);
+    setShowBookingModal(true);
+  };
 
   const handleScheduleConfirm = (date: Date, time: string) => {
     if (selectedMentor) {
@@ -210,31 +220,32 @@ export default function Dashboard() {
         mentorName: selectedMentor.name,
         date,
         time,
-      })
-      setShowBookingModal(false)
-      setShowPaymentModal(true)
+      });
+      setShowBookingModal(false);
+      setShowPaymentModal(true);
     }
-  }
+  };
 
   const handlePaymentConfirm = (file: File) => {
     // Here you would upload the file and process the booking
-    setShowPaymentModal(false)
-    setSelectedMentor(null)
-    setSessionDetails(null)
+    setShowPaymentModal(false);
+    setSelectedMentor(null);
+    setSessionDetails(null);
 
-    toast({
-      title: "Session Booked Successfully!",
-      description: "Your session is booked! Await mentor confirmation.",
-    })
+    toast.promise(new Promise((resolve) => setTimeout(resolve, 2000)), {
+      loading: "Booking session...",
+      success: "Session Booked Successfully!",
+      error: "Failed to book session.",
+    });
 
     // Redirect to student dashboard
-    router.push("/student-dashboard")
-  }
+    router.push("/student-dashboard");
+  };
 
   const handleBookmark = (mentorId: number) => {
     // Handle bookmark logic
-    console.log("Bookmarked mentor:", mentorId)
-  }
+    console.log("Bookmarked mentor:", mentorId);
+  };
 
   const clearFilters = () => {
     setFilters({
@@ -242,19 +253,23 @@ export default function Dashboard() {
       subjects: [],
       languages: [],
       educationLevels: [],
-    })
-  }
+    });
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
       <div className="flex">
-        <Sidebar />
         <main className="flex-1 p-6 ml-16 lg:ml-20">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
-              <h1 className="text-2xl lg:text-3xl font-semibold text-gray-900 mb-4 lg:mb-0">Discover Mentors</h1>
-              <EnhancedFilterBar filters={filters} onFiltersChange={setFilters} onClearFilters={clearFilters} />
+              <h1 className="text-2xl lg:text-3xl font-semibold text-gray-900 mb-4 lg:mb-0">
+                Discover Mentors
+              </h1>
+              <EnhancedFilterBar
+                filters={filters}
+                onFiltersChange={setFilters}
+                onClearFilters={clearFilters}
+              />
             </div>
 
             {filteredAndSortedMentors.length === 0 ? (
@@ -281,8 +296,8 @@ export default function Dashboard() {
           mentor={selectedMentor}
           isOpen={showBookingModal}
           onClose={() => {
-            setShowBookingModal(false)
-            setSelectedMentor(null)
+            setShowBookingModal(false);
+            setSelectedMentor(null);
           }}
           onScheduleConfirm={handleScheduleConfirm}
         />
@@ -293,13 +308,13 @@ export default function Dashboard() {
         <BankSlipUploadModal
           isOpen={showPaymentModal}
           onClose={() => {
-            setShowPaymentModal(false)
-            setSessionDetails(null)
+            setShowPaymentModal(false);
+            setSessionDetails(null);
           }}
           onConfirmPayment={handlePaymentConfirm}
           sessionDetails={sessionDetails}
         />
       )}
     </div>
-  )
+  );
 }
