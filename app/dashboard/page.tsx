@@ -2,8 +2,6 @@
 
 import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import Navbar from "@/components/navbar";
-import Sidebar from "@/components/sidebar";
 import EnhancedFilterBar from "@/components/enhanced-filter-bar";
 import EnhancedMentorCard from "@/components/enhanced-mentor-card";
 import MentorBookingModal from "@/components/mentor-booking-modal";

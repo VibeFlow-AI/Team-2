@@ -434,11 +434,11 @@ const EduVibePage: React.FC = () => {
                     Session Highlights – Trending Now
                   </h2>
                   <p className="text-lg sm:text-xl lg:text-2xl font-normal leading-relaxed text-global-1">
-                    Join the sessions students are raving about. These
-                    expert-led, high-impact sessions are designed to help you
-                    unlock your full potential whether you are polishing your
-                    resume, mapping out your career path, or getting ready to
-                    ace technical interviews.
+                    Join the sessions students are raving about. These expert-led,
+                    high-impact sessions are designed to help you unlock your full
+                    potential whether you are polishing your resume, mapping out
+                    your career path, or getting ready to ace technical
+                    interviews.
                   </p>
                 </div>
 
